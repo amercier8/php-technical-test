@@ -51,11 +51,11 @@ class RunningSession
      */
     private $pace;
 
-//    /**
-//     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="runningSessions")
-//     * @ORM\JoinColumn(nullable=false)
-//     */
-//    private $user;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="runningSessions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function getId(): ?int
     {

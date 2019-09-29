@@ -20,9 +20,10 @@ class RunningSessionController extends AbstractController
      * @param Request $request
      *
      * @param RunningSessionService $runningSessionService
+     * @param UserInterface $user
      * @return Response
      */
-    public function add(EntityManagerInterface $manager, Request $request, RunningSessionService $runningSessionService)
+    public function add(EntityManagerInterface $manager, Request $request, RunningSessionService $runningSessionService, UserInterface $user)
     {
         $form = $this->createForm(RunningSessionType::class);
 
@@ -31,7 +32,9 @@ class RunningSessionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $runningSession = $form->getData();
 
-            $runningSessionService->save($runningSession);
+            $runningSessionService->save($runningSession, $user);
+
+//            dump($runningSession);die;
 
             $manager->persist($runningSession);
             $manager->flush($runningSession);

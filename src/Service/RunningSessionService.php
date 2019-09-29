@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class RunningSessionService
 {
-    public function save(RunningSession $runningSession)
+    public function save(RunningSession $runningSession, UserInterface $user)
     {
         $duration = $runningSession->getDuration();
         $distance = $runningSession->getDistance();
@@ -17,7 +17,7 @@ class RunningSessionService
         $runningSession
             ->setAverageSpeed($this->calculateAverageSpeed($duration, $distance))
             ->setPace($this->calculatePace($duration, $distance))
-//            ->setUser(new User());
+            ->setUser($user);
         ;
     }
 

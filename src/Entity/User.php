@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -32,6 +34,16 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\RunningSession", mappedBy="user", orphanRemoval=true)
+     */
+    private $runningSessions;
+
+    public function __construct()
+    {
+        $this->runningSessions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -109,5 +121,36 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|RunningSession[]
+     */
+    public function getRunningSessions(): Collection
+    {
+        return $this->runningSessions;
+    }
+
+    public function addRunningSession(RunningSession $runningSession): self
+    {
+        if (!$this->runningSessions->contains($runningSession)) {
+            $this->runningSessions[] = $runningSession;
+            $runningSession->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRunningSession(RunningSession $runningSession): self
+    {
+        if ($this->runningSessions->contains($runningSession)) {
+            $this->runningSessions->removeElement($runningSession);
+            // set the owning side to null (unless already changed)
+            if ($runningSession->getUser() === $this) {
+                $runningSession->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

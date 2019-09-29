@@ -51,6 +51,12 @@ class RunningSession
      */
     private $pace;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="runningSessions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +142,18 @@ class RunningSession
     public function setPace(int $pace): self
     {
         $this->pace = $pace;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

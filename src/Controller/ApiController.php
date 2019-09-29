@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\RunningSession;
+use App\Repository\RunningSessionRepository;
 use App\Service\RunningSessionService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,4 +30,25 @@ class ApiController
 
         return new JsonResponse($arrayCollection);
     }
+
+    /**
+     * @Route("/api/runningsessions", name="get_running_sessions")
+     *
+     * @param RunningSessionRepository $runningSessionRepository
+     * @param RunningSessionService $runningSessionService
+     *
+     * @return JsonResponse
+     */
+    public function getRunningSessions(RunningSessionRepository $runningSessionRepository, RunningSessionService $runningSessionService): JsonResponse
+    {
+        $runningSessions = $runningSessionRepository->findAll();
+
+        $arrayCollection = [];
+        foreach ($runningSessions as $runningSession) {
+            $arrayCollection[] = $runningSessionService->getRunningSessionsAsArray($runningSession);
+        }
+
+        return new JsonResponse($arrayCollection);
+    }
+
 }

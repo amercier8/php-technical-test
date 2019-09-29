@@ -7,6 +7,7 @@ use App\Form\RunningSessionType;
 use App\Service\RunningSessionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -104,5 +105,26 @@ class RunningSessionController extends AbstractController
             'controller_name' => 'RunningSessionController',
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/running/{id}/delete", name="running_session_delete")
+     *
+     * @param RunningSession $runningSession
+     * @param EntityManagerInterface $manager
+     *
+     * @return RedirectResponse
+     */
+    public function delete(RunningSession $runningSession, EntityManagerInterface $manager): RedirectResponse
+    {
+        $manager->remove($runningSession);
+        $manager->flush();
+
+        $this->addFlash(
+            'notice',
+            'Votre session a bien été supprimée.'
+        );
+
+        return $this->redirectToRoute('running_session_consult');
     }
 }

@@ -1,12 +1,73 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+        {# On charge le CSS de bootstrap depuis le site directement #}
+        {# <link rel="stylesheet" href="{{ asset("bundles/ocstockmanagement/css/style.css") }}"> #}
+        {#            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">#}
+
+        {#            <link rel="stylesheet" href="{{ asset("web/css/style.css") }}">#}
+
+    {% endblock %}
+</head>
+<body>
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#!" class="brand-logo center">Test Stadline</a>
+        <ul class="left hide-on-med-and-down">
+            {% if app.user %}
+                <li><a href="/running/consult">Vos courses</a></li>
+                <li><a href="/running/add">Nouvelle course</a></li>
+            {% endif %}
+        </ul>
+        <ul class="right hide-on-med-and-down">
+            {% if app.user == false %}
+                <li><a class="black-text text-darken-2" href="/running/register">S'inscrire</a></li>
+                <li><a class="black-text text-darken-2" href="/running/login">Se connecter</a></li>
+            {% else %}
+                <li><a class="black-text text-darken-2" href="/running/logout">Se déconnecter</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+{% block body %}
+{% endblock %}
+{% block javascripts %}{% endblock %}
+{% block flash_messages %}
+    {% for message in app.flashes('notice') %}
+        <div class="flash-card-panel teal lighten-2 example-wrapper">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endblock %}
+</body>
+
+{#    <script type="text/javascript">#}
+{#        document.addEventListener('DOMContentLoaded', function() {#}
+{#            var elems = document.querySelectorAll('.datepicker');#}
+{#            var options =  {#}
+
+{#            };#}
+{#            var instances = M.Datepicker.init(elems, options);#}
+{#        });#}
+
+{#        document.addEventListener('DOMContentLoaded', function() {#}
+{#            var elems = document.querySelectorAll('.timepicker');#}
+{#            var instances = M.Timepicker.init(elems);#}
+{#        });#}
+{#    </script>#}
+
+
+
 </html>

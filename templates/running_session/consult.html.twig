@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="container">
+        <h3>Vos courses</h3>
+        <div>
+            <table class="striped">
+                <tr>
+                    <th>Type</th>
+                    <th>Date et heure de début</th>
+                    <th>Durée<br />(minutes)</th>
+                    <th>Distance<br />(kilomètres)</th>
+                    <th>Vitesse moyenne<br />(km/h)</th>
+                    <th>Allure moyenne<br />(min/km)</th>
+                    <th>Commentaire</th>
+                    {% for session in runningSessions %}
+                <tr>
+                    <td>{{ session.type }}</td>
+                    <td>{{ session.startTime|format_datetime(locale='fr') }}</td>
+                    <td>{{ session.duration }}</td>
+                    <td>{{ session.distance }}</td>
+                    <td>{{ session.averageSpeed }}</td>
+                    <td>{{ (session.pace / 60)|round(0,'floor') }}'{{ session.pace % 60 ~ '\"' }}</td>
+                    <td>{{ session.comment }}</td>
+                    <td><a href='/running/{{ session.id }}/edit'>Modifier</a></td>
+                    <td><a class="red-text text-darken-2" href='/running/{{ session.id }}/delete'>Supprimer</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+    </div>
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\RunningSession;
 use App\Form\RunningSessionType;
 use App\Service\RunningSessionService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,9 +34,6 @@ class RunningSessionController extends AbstractController
             $runningSession = $form->getData();
 
             $runningSessionService->save($runningSession, $user);
-
-//            dump($runningSession);die;
-
             $manager->persist($runningSession);
             $manager->flush($runningSession);
 
@@ -50,6 +48,24 @@ class RunningSessionController extends AbstractController
         return $this->render('running_session/add.html.twig', [
             'controller_name' => 'RunningSessionController',
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/running/consult", name="running_session_consult")
+     *
+     * @param Request $request
+     * @param UserInterface $user
+     *
+     * @return Response
+     */
+    public function consult(Request $request, UserInterface $user): Response
+    {
+        $runningSessions = $user->getRunningSessions();
+
+        return $this->render('running_session/consult.html.twig', [
+            'controller_name' => 'RunningSessionController',
+            'runningSessions' => $runningSessions,
         ]);
     }
 }

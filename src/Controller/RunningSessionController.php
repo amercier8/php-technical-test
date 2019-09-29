@@ -68,4 +68,41 @@ class RunningSessionController extends AbstractController
             'runningSessions' => $runningSessions,
         ]);
     }
+
+    /**
+     * @Route("/running/{id}/edit", name="running_session_edit")
+     *
+     * @param RunningSession $runningSession
+     * @param EntityManagerInterface $manager
+     * @param Request $request
+     * @param RunningSessionService $runningSessionService
+     * @param UserInterface $user
+     *
+     * @return Response
+     */
+    public function edit(RunningSession $runningSession, EntityManagerInterface $manager, Request $request, RunningSessionService $runningSessionService, UserInterface $user): Response
+    {
+        $form = $this->createForm(RunningSessionType::class, $runningSession);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $runningSessionService->save($runningSession, $user);
+
+            $manager->persist($runningSession);
+            $manager->flush($runningSession);
+
+            $this->addFlash(
+                'notice',
+                'Votre session a bien été modifiée.'
+            );
+
+            return $this->redirectToRoute('running_session_consult');
+        }
+
+        return $this->render('running_session/update.html.twig', [
+            'controller_name' => 'RunningSessionController',
+            'form' => $form->createView(),
+        ]);
+    }
 }

@@ -21,6 +21,21 @@ class RunningSessionService
         ;
     }
 
+    public function getRunningSessionsAsArray(RunningSession $runningSession): array
+    {
+        return [
+            'userId' => $runningSession->getUser()->getId(),
+            'id' => $runningSession->getId(),
+            'type' => $runningSession->getType(),
+            'start_time' => $runningSession->getStartTime(),
+            'duration' => $runningSession->getDuration(),
+            'distance' => $runningSession->getDistance(),
+            'comment' => $runningSession->getComment(),
+            'average_speed' => $runningSession->getAverageSpeed(),
+            'pace' => $runningSession->getPace(),
+        ];
+    }
+
     protected function calculateAverageSpeed(int $duration, float $distance): float
     {
         // la vitesse moyenne (en km/h, 11.1km/h par exemple, on pourra donc enregistrer "11.1")
